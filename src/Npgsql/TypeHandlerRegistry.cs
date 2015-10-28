@@ -507,7 +507,12 @@ namespace Npgsql
                         throw new Exception("Enums must be registered with Npgsql via Connection.RegisterEnumType or RegisterEnumTypeGlobally");
                     }
 
-                    if (!_byType.TryGetValue(elementType, out handler)) {
+                    if (elementType.IsValueType)
+                    {
+                        elementType = Nullable.GetUnderlyingType(elementType);
+                    }
+                    if (!_byType.TryGetValue(elementType, out handler))
+                    {
                         throw new NotSupportedException("This .NET type is not supported in Npgsql or your PostgreSQL: " + type);
                     }
                     return this[NpgsqlDbType.Array | handler.NpgsqlDbType];
@@ -519,7 +524,12 @@ namespace Npgsql
                 {
                     if (typeInfo.IsGenericType)
                     {
-                        if (!_byType.TryGetValue(type.GetGenericArguments()[0], out handler)) {
+                        Type genericArgument = type.GetGenericArguments()[0];
+                        if (genericArgument.IsValueType)
+                        {
+                            genericArgument = Nullable.GetUnderlyingType(genericArgument);
+                        }
+                        if (!_byType.TryGetValue(genericArgument, out handler)) {
                             throw new NotSupportedException("This .NET type is not supported in Npgsql or your PostgreSQL: " + type);
                         }
                         return this[NpgsqlDbType.Array | handler.NpgsqlDbType];
