@@ -507,7 +507,7 @@ namespace Npgsql
                         throw new Exception("Enums must be registered with Npgsql via Connection.RegisterEnumType or RegisterEnumTypeGlobally");
                     }
 
-                    if (elementType.IsValueType)
+                    if (elementType.IsValueType && Nullable.GetUnderlyingType(elementType) != null)
                     {
                         elementType = Nullable.GetUnderlyingType(elementType);
                     }
@@ -525,7 +525,7 @@ namespace Npgsql
                     if (typeInfo.IsGenericType)
                     {
                         Type genericArgument = type.GetGenericArguments()[0];
-                        if (genericArgument.IsValueType)
+                        if (genericArgument.IsValueType && Nullable.GetUnderlyingType(genericArgument) != null)
                         {
                             genericArgument = Nullable.GetUnderlyingType(genericArgument);
                         }
