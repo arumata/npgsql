@@ -149,6 +149,11 @@ namespace NpgsqlTypes
             if (type.IsArray)
             {
                 typeOut = type.GetElementType();
+                if (typeOut != null && Nullable.GetUnderlyingType(typeOut) != null)
+                {
+                    typeOut = Nullable.GetUnderlyingType(typeOut);
+                }
+                
                 return true;
             }
             //We can only work out the element type for IEnumerable<T> not for IEnumerable
