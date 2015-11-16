@@ -509,7 +509,11 @@ namespace Npgsql
 
                     if (elementType.IsValueType)
                     {
-                        elementType = Nullable.GetUnderlyingType(elementType);
+                        Type underlyingType = Nullable.GetUnderlyingType(elementType);
+                        if (underlyingType != null)
+                        {
+                            elementType = underlyingType;
+                        }
                     }
                     if (!_byType.TryGetValue(elementType, out handler))
                     {
@@ -524,12 +528,16 @@ namespace Npgsql
                 {
                     if (typeInfo.IsGenericType)
                     {
-                        Type genericArgument = type.GetGenericArguments()[0];
-                        if (genericArgument.IsValueType)
+                        Type genericType = type.GetGenericArguments()[0];
+                        if (genericType.IsValueType)
                         {
-                            genericArgument = Nullable.GetUnderlyingType(genericArgument);
+                            Type underlyingType = Nullable.GetUnderlyingType(genericType);
+                            if (underlyingType != null)
+                            {
+                                genericType = underlyingType;
+                            }
                         }
-                        if (!_byType.TryGetValue(genericArgument, out handler)) {
+                        if (!_byType.TryGetValue(genericType, out handler)) {
                             throw new NotSupportedException("This .NET type is not supported in Npgsql or your PostgreSQL: " + type);
                         }
                         return this[NpgsqlDbType.Array | handler.NpgsqlDbType];
