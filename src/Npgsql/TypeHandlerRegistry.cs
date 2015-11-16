@@ -507,13 +507,9 @@ namespace Npgsql
                         throw new Exception("Enums must be registered with Npgsql via Connection.RegisterEnumType or RegisterEnumTypeGlobally");
                     }
 
-                    if (elementType.IsValueType)
+                    if (elementType.IsValueType && Nullable.GetUnderlyingType(elementType) != null)
                     {
-                        Type underlyingType = Nullable.GetUnderlyingType(elementType);
-                        if (underlyingType != null)
-                        {
-                            elementType = underlyingType;
-                        }
+                        elementType = Nullable.GetUnderlyingType(elementType);
                     }
                     if (!_byType.TryGetValue(elementType, out handler))
                     {
@@ -528,16 +524,12 @@ namespace Npgsql
                 {
                     if (typeInfo.IsGenericType)
                     {
-                        Type genericType = type.GetGenericArguments()[0];
-                        if (genericType.IsValueType)
+                        Type genericArgument = type.GetGenericArguments()[0];
+                        if (genericArgument.IsValueType && Nullable.GetUnderlyingType(genericArgument) != null)
                         {
-                            Type underlyingType = Nullable.GetUnderlyingType(genericType);
-                            if (underlyingType != null)
-                            {
-                                genericType = underlyingType;
-                            }
+                            genericArgument = Nullable.GetUnderlyingType(genericArgument);
                         }
-                        if (!_byType.TryGetValue(genericType, out handler)) {
+                        if (!_byType.TryGetValue(genericArgument, out handler)) {
                             throw new NotSupportedException("This .NET type is not supported in Npgsql or your PostgreSQL: " + type);
                         }
                         return this[NpgsqlDbType.Array | handler.NpgsqlDbType];
