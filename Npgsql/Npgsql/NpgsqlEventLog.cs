@@ -64,6 +64,7 @@ namespace Npgsql
         private static readonly String CLASSNAME = MethodBase.GetCurrentMethod().DeclaringType.Name;
         private static String logfile;
         private static Boolean echomessages;
+        private static StringWriter queryWriter;
 
         private static readonly ResourceManager LogResMan;
 
@@ -75,6 +76,25 @@ namespace Npgsql
         static NpgsqlEventLog()
         {
             LogResMan = new ResourceManager(MethodBase.GetCurrentMethod().DeclaringType);
+        }
+
+        public static StringWriter QueryWriter
+        {
+            get { return queryWriter; }
+            set { queryWriter = value; }
+        }
+
+        public static void LogQuery(string query)
+        {
+            if (QueryWriter != null)
+            {
+                try
+                {
+                    QueryWriter.WriteLine(query);
+                }
+                catch { }
+            }
+
         }
 
         ///<summary>

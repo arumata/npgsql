@@ -265,10 +265,12 @@ namespace Npgsql
                     // Tell to mediator what command is being sent.
                     if (PrepareStatus == PrepareStatus.NotPrepared)
                     {
+                        NpgsqlEventLog.LogQuery(BackendEncoding.UTF8Encoding.GetString(commandText));
                         m_Connector.Mediator.SetSqlSent(commandText, NpgsqlMediator.SQLSentType.Simple);
                     }
                     else
                     {
+                        NpgsqlEventLog.LogQuery(BackendEncoding.UTF8Encoding.GetString(preparedCommandText));
                         m_Connector.Mediator.SetSqlSent(preparedCommandText, NpgsqlMediator.SQLSentType.Execute);
                     }
 
