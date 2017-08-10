@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>Npgsqlp</id>
-    <version>2.2.7.1</version>
+    <version>2.2.7.2</version>
     <projectUrl>https://github.com/arumata/npgsql</projectUrl>
     <authors>Francisco Figueiredo Jr., Josh Cooley, Dave Page, Jon Asher, Brar Piening, Chris Morgan, Hiroshi Saito, Jon Hanna, Federico Di Gregorio, Glen Parker, Shay Rojansky, arumata</authors>
     <licenseUrl>https://github.com/npgsql/Npgsql/wiki/License</licenseUrl>
